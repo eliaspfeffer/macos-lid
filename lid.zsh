@@ -8,24 +8,28 @@ lid() {
       state=$(pmset -g | awk '$1 == "SleepDisabled" { print $2; exit }')
       if [[ "${state:-0}" != "1" ]]; then
         printf '\n\033[1;30;42m %-68s \033[0m\n\n' \
-          "GRÜN — NORMALMODUS: Zuklappen versetzt den Mac in den Ruhezustand."
+          "GREEN — NORMAL MODE: Closing the lid puts your Mac to sleep."
       else
-        echo "Fehler: macOS meldet weiterhin SleepDisabled 1."
+        echo "Error: macOS still reports SleepDisabled 1."
         return 1
       fi
+    else
+      return 1
     fi
   else
     if sudo pmset disablesleep 1; then
       state=$(pmset -g | awk '$1 == "SleepDisabled" { print $2; exit }')
       if [[ "$state" == "1" ]]; then
         printf '\n\033[1;37;41m %-68s \033[0m\n' \
-          "ROT — WACHMODUS: Der Mac bleibt beim Zuklappen eingeschaltet."
+          "RED — STAY-AWAKE MODE: Your Mac stays awake with the lid closed."
         printf '\033[1;37;41m %-68s \033[0m\n\n' \
-          "NICHT im Rucksack betreiben — für freie Belüftung sorgen!"
+          "Do NOT use in a bag — keep your Mac well ventilated!"
       else
-        echo "Fehler: macOS hat den Wachmodus nicht bestätigt."
+        echo "Error: macOS did not confirm stay-awake mode."
         return 1
       fi
+    else
+      return 1
     fi
   fi
 }

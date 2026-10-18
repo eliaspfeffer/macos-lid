@@ -10,6 +10,10 @@ left alone.
 For example: start at 60% brightness → close the lid → 0% → open it → 60% again.
 Switching back to normal mode restores the usual sleep behavior.
 
+![Terminal example showing the red stay-awake warning and green normal sleep confirmation](docs/terminal.png)
+
+*English terminal example with a neutral prompt. Both modes are shown below.*
+
 ## Quick start
 
 You need a MacBook running macOS, the default zsh shell, and Apple's Command Line
@@ -17,11 +21,11 @@ Tools (`xcode-select --install` if they are not already installed). The helper
 uses a private macOS brightness API, so compatibility should be checked after
 major macOS upgrades.
 
-The complete version lives on `feat/lid-brightness`. The `main` branch preserves
-the original shell function; the `before-brightness` tag marks the original backup.
+The `main` branch contains the complete version. The `before-brightness` tag
+preserves the original sleep toggle without the brightness helper.
 
 ```sh
-git clone --branch feat/lid-brightness https://github.com/eliaspfeffer/macos-lid.git
+git clone https://github.com/eliaspfeffer/macos-lid.git
 cd macos-lid
 ./install.sh
 ```
@@ -44,8 +48,8 @@ To make the command available in future Terminal windows, add a `source` line to
 
 Run `lid` once to enable stay-awake mode; run it again to return to normal sleep.
 The command asks for your administrator password because it changes the system
-sleep setting with `pmset`. Its status messages are currently in German:
-red means stay-awake mode, green means normal mode.
+sleep setting with `pmset`. Its English status messages use
+red for stay-awake mode and green for normal mode.
 
 Keep the Mac ventilated while it is awake with the lid closed. Turn stay-awake
 mode off before putting it in a bag. Setting brightness to 0% dims the screen;
@@ -96,3 +100,15 @@ rm ~/.local/bin/lid-brightness
 If you added a `source` line to `~/.zshrc`, remove it to stop loading the `lid`
 command in new Terminal windows. Removing the helper alone does not change the
 system sleep setting.
+
+## Compatibility and testing
+
+Tested on the maintainer’s MacBook, including a real lid close/open cycle.
+This is a small macOS utility, not an Apple-supported sleep feature. It uses
+a private brightness API and is not guaranteed to work on every Mac or future
+macOS release. The self-test covers restoration, restart recovery, zero brightness,
+and write/persistence failures. It does not replace testing on your own hardware.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
